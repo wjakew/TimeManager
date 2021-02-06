@@ -1,0 +1,8 @@
+com/jakubwawak/whours/TestObject.class
+timemanager/TimeManager_DayPair.class
+timemanager/TimeManager_Object.class
+timemanager/TimeManager_Container.class
+com/jakubwawak/whours/Whours.class
+timemanager/TimeManager_FileConnector.class
+timemanager/TimeManager_DatabaseConnector.class
+com/jakubwawak/whours/Database_Connector.class

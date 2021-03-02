@@ -6,7 +6,9 @@ all rights reserved
  */
 package com.jakubwawak.whours;
 
+import generator.Raport_Generator;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import timemanager.*;
@@ -21,15 +23,15 @@ public class TestObject {
     
     
     //Constructor
-    TestObject() throws ParseException, IOException{
+    TestObject() throws ParseException, IOException, SQLException, ClassNotFoundException{
         
-        test_object = LocalDateTime.now();
+        TimeManager_FileConnector tfc = new TimeManager_FileConnector("czas_pracy.txt");
         
-        TimeManager_FileConnector tfc = new TimeManager_FileConnector("test.txt");
+        TimeManager_Container tc =  new TimeManager_Container(tfc);
         
-        TimeManager_Container tmc = new TimeManager_Container(tfc);
+        Raport_Generator rg = new Raport_Generator(tc,0);
         
-        tmc.show_container();
+        System.out.println(rg.generate_raw());
         
     }
 }

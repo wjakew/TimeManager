@@ -13,6 +13,8 @@ public class TimeManager_DayPair {
     TimeManager_Object date_of_start;
     TimeManager_Object date_of_end;
     
+    public long duration;
+    
     boolean validation_flag;
     /**
      * Main constructor
@@ -24,6 +26,13 @@ public class TimeManager_DayPair {
         this.date_of_start = date_of_start;
         this.date_of_end = date_of_end;
         validation_flag = validate_data();
+        
+        if (validation_flag){
+            duration = count_minutes_difference();
+        }
+        else{
+            duration = 0;
+        }
     }
     
     /**
@@ -43,11 +52,22 @@ public class TimeManager_DayPair {
     }
     
     /**
+     * Function for preparing glances for raport making
+     * @return String
+     */
+    public String prepare_glance(){
+        return date_of_start.raw_time_object.toString() +" - " + date_of_end.raw_time_object.toString() + "["+duration+"]";
+    }
+    
+    /**
      * Function for showing data
      */
     public void show_data(){
         System.out.println("Date of start: "+date_of_start.raw_time_object.toString());
         System.out.println("Date of end: "+date_of_end.raw_time_object.toString());
         System.out.println("Validation: "+validation_flag);
+        if (validation_flag){
+            System.out.println("Duration: "+duration);
+        }
     }
 }

@@ -9,7 +9,9 @@ import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -40,6 +42,23 @@ public class TimeManager_Object {
         raw_time_object = time_object;
         date_format = null;
         parse_object();
+    }
+    
+    /**
+     * Constructor fror parsing simple date
+     * Used in combobox
+     * @param day
+     * @param month
+     * @param year 
+     */
+    public TimeManager_Object(int day, int month,int year){
+        source_info = "raw_date";
+        date_format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        raw_time_object = LocalDateTime.parse(year+"-"+month+"-"+day+" "+"00:00");
+        
+        if ( raw_time_object != null){
+            parse_object();
+        }
     }
     
     /**
@@ -116,7 +135,25 @@ public class TimeManager_Object {
     }
     
     /**
-     * Function for getting
+     * Function for counting days between dates
+     * @param compare_to
+     * @return long
+     */
+    long count_days_to(TimeManager_Object compare_to){
+        LocalDate date_obj = LocalDate.of(year, return_month_obj(), day);
+        LocalDate compare_obj = LocalDate.of(compare_to.year, compare_to.return_month_obj(), compare_to.day);
+        return ChronoUnit.DAYS.between(date_obj, compare_obj);
+    }
+    
+    /**
+     * Function for getting month
+     * @return 
+     */
+    Month return_month_obj(){
+        return Month.of(this.month);
+    }
+    /**
+     * Function for getting name of the month
      * @return String
      */
     String get_month_name(){

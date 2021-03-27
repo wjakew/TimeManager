@@ -104,14 +104,20 @@ public class TimeManager_Object {
             miliseconds = 0;
         }
         else{
-            String raw_seconds = raw_time.split(":")[2];
-            seconds = convert_time(raw_seconds.substring(0, 2));
-            if ( raw_seconds.length() < 3 ){
-                miliseconds = -1;
+            if ( raw_time.split(":").length == 3){
+                String raw_seconds = raw_time.split(":")[2];
+                seconds = convert_time(raw_seconds.substring(0, 2));
+                if ( raw_seconds.length() < 3 ){
+                    miliseconds = -1;
+                }
+                else{
+                    miliseconds = convert_time(raw_seconds.substring(3));
+                }
             }
             else{
-                miliseconds = convert_time(raw_seconds.substring(3));
+                miliseconds = 0;
             }
+            
         }
     }
     

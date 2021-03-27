@@ -19,6 +19,7 @@ public class TimeManager_DatabaseConnector {
     
     Database_Connector database;
     LocalDateTime from,to;
+    ResultSet raw_data;
     int worker_id;
     String query;
     /**
@@ -29,12 +30,13 @@ public class TimeManager_DatabaseConnector {
      * @param to
      * @param worker_id 
      */
-    public TimeManager_DatabaseConnector(Database_Connector database,LocalDateTime from,LocalDateTime to,int worker_id){
+    public TimeManager_DatabaseConnector(Database_Connector database,LocalDateTime from,LocalDateTime to,int worker_id) throws SQLException{
         this.database = database;
         this.from = from;
         this.to = to;
         this.worker_id = worker_id;
         query = "";
+        raw_data = prepare_raw_database_data();
     }
     
     /**
@@ -103,7 +105,13 @@ public class TimeManager_DatabaseConnector {
     /**
      * Function for showing raw data
      */
-    public void show_raw_data(){
-        
+    public void show_raw_data() throws SQLException{
+        int counter = 0;
+        System.out.println("Reading raw data");
+        while(raw_data.next()){
+            System.out.println(raw_data.toString());
+            counter++;
+        }
+        System.out.println("Amount of data: "+counter);
     }
 }

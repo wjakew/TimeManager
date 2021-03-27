@@ -26,8 +26,9 @@ public class Whours {
         database.connect("localhost", "entrc_database", "entrc_admin", "password");
         
         TimeManager_DatabaseConnector tmdc = new TimeManager_DatabaseConnector(database,null,null,1);
+        tmdc.show_raw_data();
         
-        tmdc.prepare_raw_database_data();
-    
+        TimeManager_Container tmc = new TimeManager_Container(tmdc);
+        tmc.show_container();
     }
 }

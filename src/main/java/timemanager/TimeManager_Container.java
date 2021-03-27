@@ -7,8 +7,10 @@ package timemanager;
 
 import com.jakubwawak.whours.Database_Connector;
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +28,12 @@ public class TimeManager_Container {
      */
     public String submitted_mode;
  
-    TimeManager_FileConnector data_file;            // raw object data
+    TimeManager_FileConnector data_file;                   // raw object data
     
-    ArrayList<String> raw_data;                     // raw data about dates 
+    ArrayList<String> raw_data;                            // raw data about dates 
     public ArrayList<TimeManager_DayPair> time_objects;    // prepared time objects
     public int collection_size;
+    Database_Connector database_connector;
     int worker_id;
     /**
      * Constructor with FileConnector usage
@@ -43,7 +46,7 @@ public class TimeManager_Container {
         data_file.read_file();
         raw_data = data_file.raw_file_lines;
         time_objects = new ArrayList<>();
-        
+        database_connector = null;
         for(String line : data_file.raw_file_lines){
             if ( line != null)
                 time_objects.add(data_file.parse_line(line));
@@ -56,31 +59,87 @@ public class TimeManager_Container {
      * @param database_connector 
      */
     public TimeManager_Container(TimeManager_DatabaseConnector database_connector) throws SQLException{
+        data_file = null;
+        this.database_connector = database_connector.database;
+        submitted_mode = "Database";
+        worker_id = database_connector.worker_id;
         ResultSet raw_data = database_connector.prepare_raw_database_data();
+        time_objects = new ArrayList<>();
+        
+        translate_database_data(raw_data);
+        
     }
     /**
     Function for validating container
     */
     public void validate_container(){
-        List<Integer> index_list = new ArrayList<>();
+        if ( submitted_mode.equals("File")){
+            List<Integer> index_list = new ArrayList<>();
         
-        for(TimeManager_DayPair tdp : time_objects){
-            if (tdp == null){
-                index_list.add(time_objects.indexOf(tdp));
+            for(TimeManager_DayPair tdp : time_objects){
+                if (tdp == null){
+                    index_list.add(time_objects.indexOf(tdp));
+                }
+            }
+
+            for(Integer index : index_list){
+                time_objects.remove(index);
             }
         }
-        
-        for(Integer index : index_list){
-            time_objects.remove(index);
+        else if ( submitted_mode.equals("Database")){
+            
         }
+        
     }
     
     /**
      * Function for translating database data
      */
     void translate_database_data(ResultSet database_data) throws SQLException{
+        /**
+        in database_data all data from entrance table
+        schema:
+         * Columns:
+            entrance_id int AI PK 
+            worker_id int 
+            log_id int 
+            entrance_time timestamp 
+            entrance_finished int
+         */
         while ( database_data.next() ){
+            TimeManager_Object enter_time = new TimeManager_Object(database_data.getObject("entrance_time", LocalDateTime.class));
             
+            int entrance_finished = database_data.getInt("entrance_finished");
+            
+            String query = " SELECT * from entrance_exit where "
+                    + "entrance_exit_id = ?";
+            
+            PreparedStatement ppst = database_connector.con.prepareStatement(query);
+            
+            /**
+             Columns:
+                entrance_exit_id int AI PK 
+                worker_id int 
+                user_log_id int 
+                entrance_exit_time timestam
+             */
+            try{
+                ppst.setInt(1,entrance_finished);
+                
+                ResultSet rs = ppst.executeQuery();
+                
+                if ( rs.next() ){
+                    TimeManager_Object exit_time = 
+                            new TimeManager_Object(rs.getObject("entrance_exit_time",LocalDateTime.class));
+                    TimeManager_DayPair tdp = new TimeManager_DayPair(enter_time,exit_time);
+                    if ( tdp.validate_data() ){
+                        time_objects.add(tdp);
+                    }
+                }
+            }catch(SQLException e){
+                System.out.println("Error loading contaner "
+                        + "data from database ("+e.toString()+")");
+            }
         }
     }
         

@@ -10,6 +10,8 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import timemanager.TimeManager_Object;
 
 /**
@@ -70,6 +72,7 @@ public class Generator_DatePreparer {
         years = new ArrayList<>();
         days = new ArrayList<>();
         
+        this.day = day_number;
         this.year = year_number;
         this.month_name = month_name;
         
@@ -97,10 +100,10 @@ public class Generator_DatePreparer {
         String[] date_elements = date_portion.split("-");
         
         try{
-            index = new int[] {Integer.parseInt(date_elements[2]),0,9};
+            index = new int[] {Integer.parseInt(date_elements[2])-1,0,9};
             years = new ArrayList<>();
             days = new ArrayList<>();
-            
+            this.day = Integer.parseInt(date_elements[2]);
             this.year = Integer.parseInt(date_elements[0]);
             
             index[1] = Integer.parseInt(date_elements[1])-1;
@@ -110,7 +113,7 @@ public class Generator_DatePreparer {
             
             this.month_name = months[index[1]];
             
-            for(int i = year-10; i<year ; i++){
+            for(int i = year-9; i<=year ; i++){
                 years.add(i);
             }
         
@@ -128,6 +131,8 @@ public class Generator_DatePreparer {
      */
     public void show_data(){
         System.out.println("Generator_DatePreparer raw data:");
+        System.out.println("day number: "+day);
+        System.out.println("day index: "+ index[0]);
         System.out.println("month name: "+month_name);
         System.out.println("month index: "+index[1]);
         System.out.println("month number of days: "+get_number_ofdays(month_name));
@@ -215,6 +220,29 @@ public class Generator_DatePreparer {
             return month.length(leap_year(year));
         }
         return -1;
+    }
+    
+    /**
+     * Function for loading data to combobox
+     * @param object_to_load
+     * @return JComboBox
+     */
+    void load_comboboxdata(ArrayList<JComboBox> object_to_load){
+        
+        DefaultComboBoxModel dcm_day = new DefaultComboBoxModel();
+        DefaultComboBoxModel dcm_month = new DefaultComboBoxModel();
+        DefaultComboBoxModel dcm_year = new DefaultComboBoxModel();
+        
+        dcm_day.addAll(days);
+        dcm_month.addAll(Arrays.asList(months));
+        dcm_year.addAll(years);
+        
+        object_to_load.get(0).setModel(dcm_day);
+        object_to_load.get(0).setSelectedIndex(index[0]);
+        object_to_load.get(1).setModel(dcm_month);
+        object_to_load.get(1).setSelectedIndex(index[1]);
+        object_to_load.get(2).setModel(dcm_year);
+        object_to_load.get(2).setSelectedIndex(index[2]);
     }
     
     /**

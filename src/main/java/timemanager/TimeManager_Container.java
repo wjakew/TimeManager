@@ -5,8 +5,12 @@ all rights reserved
  */
 package timemanager;
 
+import com.jakubwawak.whours.Database_Connector;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *Object for storing large portions of date data
@@ -41,9 +45,61 @@ public class TimeManager_Container {
         time_objects = new ArrayList<>();
         
         for(String line : data_file.raw_file_lines){
-             time_objects.add(data_file.parse_line(line));
+            if ( line != null)
+                time_objects.add(data_file.parse_line(line));
         }
         collection_size = time_objects.size();
+    }
+    
+    /**
+     * Constructor with TimeManager_DatabaseConnector
+     * @param database_connector 
+     */
+    public TimeManager_Container(TimeManager_DatabaseConnector database_connector) throws SQLException{
+        ResultSet raw_data = database_connector.prepare_raw_database_data();
+    }
+    /**
+    Function for validating container
+    */
+    public void validate_container(){
+        List<Integer> index_list = new ArrayList<>();
+        
+        for(TimeManager_DayPair tdp : time_objects){
+            if (tdp == null){
+                index_list.add(time_objects.indexOf(tdp));
+            }
+        }
+        
+        for(Integer index : index_list){
+            time_objects.remove(index);
+        }
+    }
+    
+    /**
+     * Function for translating database data
+     */
+    void translate_database_data(ResultSet database_data) throws SQLException{
+        while ( database_data.next() ){
+            
+        }
+    }
+        
+    /**
+     * Function for loading database 
+     * @param database
+     */
+    public void load_to_database(Database_Connector database) throws SQLException{
+        
+        for(TimeManager_DayPair tdp : time_objects){
+            
+            database.set_entrance_event(1, tdp.date_of_start.raw_time_object);
+            System.out.println("Loaded to database: "+tdp.date_of_start.raw_time_object.toString());
+            
+            database.set_exit_event(1, tdp.date_of_end.raw_time_object);
+            System.out.println("Loaded to database: "+tdp.date_of_end.raw_time_object.toString());
+        
+        }
+        
     }
     
     /**
@@ -60,7 +116,9 @@ public class TimeManager_Container {
     public void show_container(){
         System.out.println("Amount of data elements: "+collection_size);
         for(TimeManager_DayPair tdp : time_objects){
-            tdp.show_data();
+            if ( tdp != null ){
+                tdp.show_data();
+            }
         }   
     }
 }

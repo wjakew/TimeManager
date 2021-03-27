@@ -5,11 +5,14 @@ all rights reserved
  */
 package com.jakubwawak.whours;
 
-import generator_gui.Generator_DatePreparer;
+import generator.Raport_Generator;
+import generator_gui.generator_window;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.ParseException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import timemanager.TimeManager_Container;
+import timemanager.TimeManager_DatabaseConnector;
+import timemanager.TimeManager_FileConnector;
 
 /**
  *Main runnable class
@@ -17,14 +20,14 @@ import java.time.ZoneId;
  */
 public class Whours {
  
-    public static void main(String[] args) throws ParseException, IOException{
-        Generator_DatePreparer gdp = new Generator_DatePreparer("Marzec",2021);
-        gdp.show_data();
+    public static void main(String[] args) throws ParseException, IOException, SQLException, ClassNotFoundException{
+        //new generator_window();
+        Database_Connector database = new Database_Connector();
+        database.connect("localhost", "entrc_database", "entrc_admin", "password");
         
-        Generator_DatePreparer gdp2 = new Generator_DatePreparer(3,"Marzec",2021);
-        gdp2.show_data();
+        TimeManager_DatabaseConnector tmdc = new TimeManager_DatabaseConnector(database,null,null,1);
         
-        Generator_DatePreparer gdp3 = new Generator_DatePreparer(LocalDateTime.now( ZoneId.of( "Europe/Warsaw" ) ));
-        gdp3.show_data();
+        tmdc.prepare_raw_database_data();
+    
     }
 }

@@ -54,7 +54,7 @@ public class TimeManager_DatabaseConnector {
      * Function for preparing raw data from database
      * @return ResultSet
      */
-    ResultSet prepare_raw_database_data() throws SQLException{
+    public ResultSet prepare_raw_database_data() throws SQLException{
         int possibility = 0;
         // 1 possibility
         // worker_id != null,from=null,to=null
@@ -98,5 +98,12 @@ public class TimeManager_DatabaseConnector {
             database.log("Failed to get entrance data for user(id:"+worker_id+")");
             return null;
         }
+    }
+    
+    /**
+     * Function for showing raw data
+     */
+    public void show_raw_data(){
+        
     }
 }

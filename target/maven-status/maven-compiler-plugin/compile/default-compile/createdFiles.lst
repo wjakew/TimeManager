@@ -1,10 +1,14 @@
-generator_gui\Generator_DatePreparer.class
-generator_gui\generator_window.class
+generator\Raport_Generator.class
 com\jakubwawak\whours\Whours.class
-timemanager\TimeManager_Container.class
 timemanager\TimeManager_DayPair.class
 com\jakubwawak\whours\Database_Connector.class
 com\jakubwawak\whours\TestObject.class
 timemanager\TimeManager_Object.class
 timemanager\TimeManager_FileConnector.class
+generator_gui\generator_window$1.class
+generator_gui\Generator_DatePreparer.class
+generator_gui\generator_window.class
+timemanager\TimeManager_Container.class
+generator_gui\generator_window$2.class
+generator_gui\generator_window$3.class
 timemanager\TimeManager_DatabaseConnector.class

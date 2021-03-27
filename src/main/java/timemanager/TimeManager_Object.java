@@ -130,7 +130,7 @@ public class TimeManager_Object {
      * @param number_of_days
      * @return LocalDateTime
      */
-    LocalDateTime day_difference(int number_of_days){
+    public LocalDateTime day_difference(int number_of_days){
         return raw_time_object.minusDays(number_of_days);
     }
     

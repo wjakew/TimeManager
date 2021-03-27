@@ -5,6 +5,7 @@ all rights reserved
  */
 package timemanager;
 
+import com.jakubwawak.whours.Database_Connector;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,6 +29,7 @@ public class TimeManager_FileConnector {
     String file_path;
     File file;
     boolean exist_flag;
+    boolean file_read;
     
     /**
      * Main constructor
@@ -40,6 +42,7 @@ public class TimeManager_FileConnector {
         raw_file_lines = new ArrayList<>();
         
         exist_flag = file.exists();
+        file_read = false;
     }
     
     
@@ -47,16 +50,18 @@ public class TimeManager_FileConnector {
      * Function for reading file
      */
     public void read_file() throws FileNotFoundException, IOException{
-        BufferedReader br = new BufferedReader(new FileReader(file_path));
+        if ( file_read == false){
+            BufferedReader br = new BufferedReader(new FileReader(file_path));
         
-        String line = br.readLine();
-        while ( line != null ){
-            raw_file_lines.add(line);
-            line = br.readLine();
+            String line = br.readLine();
+            while ( line != null && !line.isEmpty()){
+                raw_file_lines.add(line);
+                line = br.readLine();
+            }
+            br.close();
+            file_read = true;
         }
-        br.close();
     }
-    
     
     /**
      * Function for showing raw data from collection
@@ -75,14 +80,17 @@ public class TimeManager_FileConnector {
      */
     public TimeManager_DayPair parse_line(String line){
         try{
+            if ( line.isEmpty()){
+                return null;
+            }
             String date = line.split("\\[")[0];
-            String time = line.split("\\[")[1];
+            String time = line.split("\\[")[1].substring(0,line.split("\\[")[1].length()-1);
             //yyyy-MM-dd HH:mm
             
             String[] date_parts = date.split("\\.");
             
             String DATE_STRING = date_parts[2]+"-"+date_parts[1]+"-"+date_parts[0];
-            String [] time_parts = time.split("/");
+            String [] time_parts = time.split("-");
             
             String time_enter = time_parts[0];
             String time_exit = time_parts[1];
@@ -92,15 +100,15 @@ public class TimeManager_FileConnector {
             
             String enter_string = DATE_STRING + " " + time_enter;
             String exit_string = DATE_STRING + " " + time_exit;
-            exit_string = exit_string.substring(0, exit_string.length()-1);
+            exit_string = exit_string.substring(0, exit_string.length());
             return new TimeManager_DayPair(new TimeManager_Object(enter_string),new TimeManager_Object(exit_string));
         }
         catch(Exception e){
             System.out.println("Parse failed ("+e.toString()+")");
+            System.exit(0);
             return null;
         }
     }
-    
     
     /**
      * Function for formatting time

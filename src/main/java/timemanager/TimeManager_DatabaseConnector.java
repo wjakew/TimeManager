@@ -48,6 +48,9 @@ public class TimeManager_DatabaseConnector {
      * worker_id != null,from!=null,to=null
      * Object generates worker data since given date to now
      * 3
+     * worker_id != null,from=null,to_null
+     * Object generates worker data to given date
+     * 4
      * worker_id != null,from!=null,to!=null
      * Object generates worker data in given time
     */
@@ -66,14 +69,21 @@ public class TimeManager_DatabaseConnector {
         }
         // 2 possibility
         // worker_id != null,from!=null,to=null
-        if ( worker_id != -1 && from != null && to == null){
-            query = "SELECT * FROM ENTRANCE WHERE worker_id = ? and entrance_time < ?;";
+        else if ( worker_id != -1 && from != null && to == null){
+            query = "SELECT * FROM ENTRANCE WHERE worker_id = ? and entrance_time >= ?;";
             possibility = 2;
         }
         // 3 possibility
+        // worker_id != null,from=null,to!=null
+        else if (worker_id != -1 && from == null && to != null){
+            query = "SELECT * FROM ENTRANCE WHERE worker_id = ? and entrance_time <= ?;";
+            possibility = 3;
+        }
+        // 4 possibility
         // worker_id != null,from!=null,to!=null
         else if ( worker_id != -1 && from != null && to != null){
-            query = "SELECT * FROM ENTRANCE WHERE worker_id = ? and entrance_time < ? and entrance_time > ?;";
+            query = "SELECT * FROM ENTRANCE WHERE worker_id = ? and entrance_time <= ? and entrance_time >= ?;";
+            possibility = 4;
         }
         
 
@@ -91,13 +101,19 @@ public class TimeManager_DatabaseConnector {
                 case 3:
                     ppst.setInt(1,worker_id);
                     ppst.setObject(2,to);
+                    break;
+                case 4:
+                    ppst.setInt(1,worker_id);
+                    ppst.setObject(2,to);
                     ppst.setObject(3,from);
                     break;
+                default:
+                    System.out.println("None of possibilities set.");
             }
             
             return ppst.executeQuery();
         }catch(SQLException e){
-            database.log("Failed to get entrance data for user(id:"+worker_id+")");
+            database.log("Failed to get entrance data for user(id:"+worker_id+") ("+e.toString()+")");
             return null;
         }
     }

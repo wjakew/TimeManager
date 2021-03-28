@@ -10,6 +10,8 @@ import generator_gui.generator_window;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import timemanager.TimeManager_Container;
 import timemanager.TimeManager_DatabaseConnector;
 import timemanager.TimeManager_FileConnector;
@@ -21,14 +23,7 @@ import timemanager.TimeManager_FileConnector;
 public class Whours {
  
     public static void main(String[] args) throws ParseException, IOException, SQLException, ClassNotFoundException{
-        //new generator_window();
-        Database_Connector database = new Database_Connector();
-        database.connect("localhost", "entrc_database", "entrc_admin", "password");
-        
-        TimeManager_DatabaseConnector tmdc = new TimeManager_DatabaseConnector(database,null,null,1);
-        tmdc.show_raw_data();
-        
-        TimeManager_Container tmc = new TimeManager_Container(tmdc);
-        tmc.show_container();
+        new generator_window();
+
     }
 }

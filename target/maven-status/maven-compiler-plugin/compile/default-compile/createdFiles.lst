@@ -5,12 +5,15 @@ com\jakubwawak\whours\Database_Connector.class
 generator_gui\generator_window2$1.class
 com\jakubwawak\whours\TestObject.class
 timemanager\TimeManager_Object.class
+generator_gui\generator_window2$2.class
 timemanager\TimeManager_FileConnector.class
 generator_gui\generator_window$1.class
 generator_gui\generator_window2.class
 generator_gui\Generator_DatePreparer.class
 generator_gui\generator_window.class
+generator_gui\generator_window2$3.class
 timemanager\TimeManager_Container.class
+generator_gui\generator_window2$4.class
 generator_gui\generator_window$2.class
 generator_gui\generator_window$3.class
 timemanager\TimeManager_DatabaseConnector.class

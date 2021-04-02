@@ -6,7 +6,11 @@ all rights reserved
 package generator_gui;
 
 import com.jakubwawak.whours.Database_Connector;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import javax.swing.DefaultListModel;
+import javax.swing.JTextField;
+import timemanager.TimeManager_Object;
 
 /**
  *Window for implementing generator functionality
@@ -18,11 +22,15 @@ public class generator_window2 extends javax.swing.JDialog {
      * Creates new form generator_window2
      */
     Database_Connector database;
+    TimeManager_Object time_to,time_from;
     
     public generator_window2(java.awt.Frame parent, boolean modal,Database_Connector database) {
         super(parent, modal);
         this.database = database;
+        time_to = null;
+        time_from = null;
         initComponents();
+        this.setLocationRelativeTo(null);
         load_window();
         setVisible(true);
     }
@@ -43,8 +51,6 @@ public class generator_window2 extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         textfield_to = new javax.swing.JTextField();
-        button_actualmonth = new javax.swing.JButton();
-        button_actualweek = new javax.swing.JButton();
         button_last7days = new javax.swing.JButton();
         button_last30days = new javax.swing.JButton();
         button_ready = new javax.swing.JButton();
@@ -56,6 +62,7 @@ public class generator_window2 extends javax.swing.JDialog {
         jButton4.setText("jButton4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Generacja raportu");
 
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jLabel1.setText("Wybrany pracownik:");
@@ -74,15 +81,26 @@ public class generator_window2 extends javax.swing.JDialog {
         textfield_to.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         textfield_to.setText("jTextField1");
 
-        button_actualmonth.setText("Aktualny miesiąc");
-
-        button_actualweek.setText("Aktualny tydzień");
-
         button_last7days.setText("Ostatnie 7 dni");
+        button_last7days.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_last7daysActionPerformed(evt);
+            }
+        });
 
         button_last30days.setText("Ostatnie 30 dni");
+        button_last30days.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_last30daysActionPerformed(evt);
+            }
+        });
 
         button_ready.setText("Gotowe");
+        button_ready.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_readyActionPerformed(evt);
+            }
+        });
 
         list_objectdata.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -104,28 +122,26 @@ public class generator_window2 extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1)
                     .addComponent(button_ready, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(button_last30days, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(button_last7days, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(button_actualweek, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(button_actualmonth, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(55, 55, 55)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                                 .addComponent(textfield_from, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(textfield_to, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(combobox_workerdata, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                .addComponent(combobox_workerdata, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(button_last30days, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(165, 165, 165)
+                                        .addComponent(button_last7days, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(textfield_to, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(188, 188, 188)
@@ -149,8 +165,6 @@ public class generator_window2 extends javax.swing.JDialog {
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(button_actualmonth)
-                    .addComponent(button_actualweek)
                     .addComponent(button_last7days)
                     .addComponent(button_last30days))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -166,14 +180,145 @@ public class generator_window2 extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void button_last30daysActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_last30daysActionPerformed
+        LocalDateTime ldt = LocalDateTime.now( ZoneId.of( "Europe/Warsaw" ) );
+        time_to = new TimeManager_Object(ldt);
+        time_from = new TimeManager_Object(time_to.day_difference(30));
+        update_date_textfield();
+    }//GEN-LAST:event_button_last30daysActionPerformed
+
+    private void button_last7daysActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_last7daysActionPerformed
+        LocalDateTime ldt = LocalDateTime.now( ZoneId.of( "Europe/Warsaw" ) );
+        time_to = new TimeManager_Object(ldt);
+        time_from = new TimeManager_Object(time_to.day_difference(7));
+        update_date_textfield();
+    }//GEN-LAST:event_button_last7daysActionPerformed
+
+    private void button_readyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_readyActionPerformed
+        if ( validate_fields() ){
+            System.out.println("Fields validated correctly");
+            int[] data_to = load_textfield_data(textfield_to);
+            int[] data_from = load_textfield_data(textfield_from);
+            
+            time_to = new TimeManager_Object(data_to[2],data_to[1],data_to[0]);
+            time_from = new TimeManager_Object(data_from[2],data_from[1],data_from[0]);
+            
+            if ( !time_to.error && !time_from.error){
+                button_ready.setText(time_from.get_date_glance()+" - "+time_to.get_date_glance());
+            
+                /*
+                Disabling components
+                */
+                combobox_workerdata.setEnabled(false);
+                textfield_to.setEditable(false);
+                textfield_from.setEditable(false);
+                button_ready.setEnabled(false);
+            }
+            else{
+                System.out.println("Wrong date on input");
+            }
+        }
+        else{
+            System.out.println("Field validation error");
+        }
+    }//GEN-LAST:event_button_readyActionPerformed
+    
+
+    /**
+     * Function for creating load window
+     */
+    void load_combobox_worker(){
+
+    }
+    
+    /**
+     * Function for updating textfield with given dates
+     */
+    void update_date_textfield(){
+        textfield_to.setText(time_to.get_date_glance());
+        textfield_from.setText(time_from.get_date_glance());
+    }
+    
+    /**
+     * 
+     * @param obj 
+     */
+    int[] load_textfield_data(JTextField obj){
+        int[]  data = {0,0,0};
+        String input = obj.getText();
+        String [] elements = input.split("-");
         
+        if( elements.length == 3){
+            try{
+                data[0] = Integer.parseInt(elements[0]);
+                data[1] = Integer.parseInt(elements[1]);
+                data[2] = Integer.parseInt(elements[2]);
+                System.out.println("Data elements read correctly.");
+            }catch(NumberFormatException e){
+                System.out.println("Failed to get data objects");
+                return data;
+            }
+        }
+        return data;
+    }
+    
+    /**
+     * Function for loading window components
+     */
     void load_window(){
+        list_objectdata.setEnabled(false);
+        button_generate.setEnabled(false);
         
+        load_combobox_worker();
+        
+        LocalDateTime ldt = LocalDateTime.now( ZoneId.of( "Europe/Warsaw" ) );
+        time_to = new TimeManager_Object(ldt);
+        time_from = new TimeManager_Object(time_to.day_difference(30));
+        update_date_textfield();
+    }
+    
+    
+    
+    /**
+     * Function for validating field with date
+     * @param field
+     * @return boolean
+     */
+    boolean validate_field(String field){
+        String[] data = field.split("-");
+        int flag_counter = 0;
+        if ( data.length == 3){
+            
+            for ( int i = 0 ; i < 3 ; i++ ){
+                try{
+                    int test = Integer.parseInt(data[i]);
+                    if ( i == 2){
+                        if (test <= 31){
+                            flag_counter ++;
+                        }
+                    }
+                    else{
+                        flag_counter ++;
+                    }
+                
+                }catch(NumberFormatException e){}
+            }
+        }
+        return flag_counter == 3;
+    }
+    
+    /**
+     * Function for validating data fields
+     */
+    boolean validate_fields(){
+        String from = textfield_from.getText();
+        String to = textfield_to.getText();
+        
+        return validate_field(from) && validate_field(to);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton button_actualmonth;
-    private javax.swing.JButton button_actualweek;
     private javax.swing.JButton button_generate;
     private javax.swing.JButton button_last30days;
     private javax.swing.JButton button_last7days;

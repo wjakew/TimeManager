@@ -10,6 +10,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
+    <Property name="title" type="java.lang.String" value="Generacja raportu"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -35,31 +36,30 @@
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="jScrollPane1" max="32767" attributes="0"/>
                   <Component id="button_ready" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="button_last30days" min="-2" pref="141" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="button_last7days" min="-2" pref="141" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="button_actualweek" min="-2" pref="141" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="button_actualmonth" min="-2" pref="141" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace pref="48" max="32767" attributes="0"/>
                               <Component id="textfield_from" min="-2" pref="447" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="textfield_to" min="-2" pref="447" max="-2" attributes="0"/>
-                          </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="jLabel1" min="-2" pref="179" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="combobox_workerdata" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="button_last30days" min="-2" pref="141" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="165" max="-2" attributes="0"/>
+                                      <Component id="button_last7days" min="-2" pref="141" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="textfield_to" min="-2" pref="447" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                   </Group>
@@ -93,8 +93,6 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="button_actualmonth" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="button_actualweek" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="button_last7days" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="button_last30days" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -167,30 +165,29 @@
         <Property name="text" type="java.lang.String" value="jTextField1"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="button_actualmonth">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Aktualny miesi&#x105;c"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="button_actualweek">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Aktualny tydzie&#x144;"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="button_last7days">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ostatnie 7 dni"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_last7daysActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="button_last30days">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ostatnie 30 dni"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_last30daysActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="button_ready">
       <Properties>
         <Property name="text" type="java.lang.String" value="Gotowe"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_readyActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>

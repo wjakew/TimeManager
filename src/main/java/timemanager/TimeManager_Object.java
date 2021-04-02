@@ -12,6 +12,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -33,15 +34,28 @@ public class TimeManager_Object {
     String raw_time;
     int hours,minutes,seconds,miliseconds;    // variables for storing hours
     
+    public boolean error;
+    
     /**
      * Main constructor for creating TimeManager_Object from LocalDateTime
      * @param time_object 
+     * null - time now
      */
     public TimeManager_Object(LocalDateTime time_object){
-        source_info = "LocalDateTime";
-        raw_time_object = time_object;
-        date_format = null;
-        parse_object();
+        if ( time_object == null ){
+            source_info = "LocalDateTime";
+            raw_time_object = LocalDateTime.now( ZoneId.of( "Europe/Warsaw" ) );
+            date_format = null;
+            parse_object();
+            error = false;
+        }
+        else{
+            source_info = "LocalDateTime";
+            raw_time_object = time_object;
+            date_format = null;
+            parse_object();
+            error = false;
+        }
     }
     
     /**
@@ -54,11 +68,29 @@ public class TimeManager_Object {
     public TimeManager_Object(int day, int month,int year){
         source_info = "raw_date";
         date_format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        raw_time_object = LocalDateTime.parse(year+"-"+month+"-"+day+" "+"00:00");
-        
-        if ( raw_time_object != null){
-            parse_object();
+        try{
+            if ( month <10){
+                String month_text = "0" + Integer.toString(month);
+                if ( day < 10){
+                    String day_text = "0" + Integer.toString(day);
+                    raw_time_object = LocalDateTime.parse(year+"-"+month_text+"-"+day_text+" "+"00:00",date_format);
+                }
+                else{
+                    raw_time_object = LocalDateTime.parse(year+"-"+month_text+"-"+day+" "+"00:00",date_format);
+                }
+            }
+            else{
+                raw_time_object = LocalDateTime.parse(year+"-"+month+"-"+day+" "+"00:00",date_format);
+            }
+
+            if ( raw_time_object != null){
+                parse_object();
+            }
+        }catch(Exception e){
+            raw_time_object = null;
+            error = true;
         }
+
     }
     
     /**
@@ -141,6 +173,15 @@ public class TimeManager_Object {
     }
     
     /**
+     * Function for calculating day difference
+     * @param number_of_days
+     * @return TimeManager_Object
+     */
+    public TimeManager_Object day_differance(int number_of_days){
+        return new TimeManager_Object(raw_time_object.minusDays(number_of_days));
+    }
+    
+    /**
      * Function for counting days between dates
      * @param compare_to
      * @return long
@@ -165,6 +206,23 @@ public class TimeManager_Object {
     String get_month_name(){
         DateFormatSymbols dfs = new DateFormatSymbols(); 
         return dfs.getMonths()[month-1];
+    }
+    
+    /**
+     * Function for getting date glance
+     * @return String
+     */
+    public String get_date_glance(){
+        if ( month < 10){
+            if ( day < 10 ){
+                return Integer.toString(year)+"-0"+Integer.toString(this.month)+"-0"+Integer.toString(this.day);
+            }
+            return Integer.toString(year)+"-0"+Integer.toString(this.month)+"-"+Integer.toString(this.day);
+        }
+        if ( day < 10)
+            return Integer.toString(year)+"-"+Integer.toString(this.month)+"-0"+Integer.toString(this.day);
+        
+        return Integer.toString(year)+"-"+Integer.toString(this.month)+"-"+Integer.toString(this.day);
     }
     
     /**

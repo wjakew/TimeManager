@@ -86,10 +86,7 @@ public class TimeManager_Container {
                 time_objects.remove(index);
             }
         }
-        else if ( submitted_mode.equals("Database")){
-            
-        }
-        
+        else if ( submitted_mode.equals("Database")){}
     }
     
     /**

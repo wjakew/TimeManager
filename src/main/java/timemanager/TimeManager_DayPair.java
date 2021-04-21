@@ -15,7 +15,7 @@ public class TimeManager_DayPair {
     
     public long duration;
     
-    boolean validation_flag;
+    public boolean validation_flag;
     /**
      * Main constructor
      * @param date_of_start
@@ -33,6 +33,69 @@ public class TimeManager_DayPair {
         else{
             duration = 0;
         }
+    }
+    
+    public TimeManager_DayPair(String line){
+        try{
+            if ( line.isEmpty()){
+                date_of_start = null;
+                date_of_end = null;
+                validation_flag = false;
+            }
+            else{
+                String date = line.split("\\[")[0];
+                String time = line.split("\\[")[1].substring(0,line.split("\\[")[1].length()-1);
+                //yyyy-MM-dd HH:mm
+
+                String[] date_parts = date.split("\\.");
+
+                String DATE_STRING = date_parts[2]+"-"+date_parts[1]+"-"+date_parts[0];
+                String [] time_parts = time.split("-");
+
+                String time_enter = time_parts[0];
+                String time_exit = time_parts[1];
+
+                time_enter = time_validate(time_enter);
+                time_exit = time_validate(time_exit);
+
+                String enter_string = DATE_STRING + " " + time_enter;
+                String exit_string = DATE_STRING + " " + time_exit;
+                exit_string = exit_string.substring(0, exit_string.length());
+
+                date_of_start = new TimeManager_Object(enter_string);
+                date_of_end = new TimeManager_Object(exit_string);
+                validation_flag = validate_data();
+
+                if (validation_flag){
+                    duration = count_minutes_difference();
+                }
+                else{
+                    duration = 0;
+                }
+            }
+
+            
+        }
+        catch(Exception e){
+            System.out.println("Parse failed ("+e.toString()+")");
+            System.exit(0);
+
+        }
+    }
+    
+        /**
+     * Function for formatting time
+     * @param time
+     * @return String
+     */
+    String time_validate(String time){
+        String[] elements = time.split(":");
+        
+        if ( elements[0].length() == 1){
+            elements[0] = "0"+elements[0];
+        }
+
+        return elements[0]+":"+elements[1];
     }
     
     /**

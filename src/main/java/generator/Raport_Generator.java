@@ -20,7 +20,7 @@ public class Raport_Generator {
     LocalDateTime date;
     int owner;
     long calculated_minutes;
-    long converted_hours;
+    public long converted_hours;
     
     // Constructor
     public Raport_Generator(TimeManager_Container data_container,int owner){

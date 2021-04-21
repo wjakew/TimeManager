@@ -5,7 +5,6 @@ all rights reserved
  */
 package timemanager;
 
-import com.jakubwawak.whours.Database_Connector;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,8 +27,8 @@ public class TimeManager_FileConnector {
     
     String file_path;
     File file;
-    boolean exist_flag;
-    boolean file_read;
+    public boolean exist_flag;
+    public boolean file_read;
     
     /**
      * Main constructor

@@ -6,6 +6,7 @@ all rights reserved
 package timemanager;
 
 import com.jakubwawak.whours.Database_Connector;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -87,6 +88,42 @@ public class TimeManager_Container {
             }
         }
         else if ( submitted_mode.equals("Database")){}
+    }
+    
+    
+    /**
+     * Function for preparing data to save
+     * @return ArrayList
+     */
+    public ArrayList prepare_raw_data() {
+        ArrayList<String> lines = new ArrayList();
+        
+        for(TimeManager_DayPair tmdp : this.time_objects){
+            lines.add(tmdp.raw_data);
+        }
+        return lines;
+    }
+    
+    /**
+     * Function for dumping data of the container to file
+     * @param path_to_file
+     * @return Boolean
+     */
+    public boolean dump_container() {
+        ArrayList<String> lines = prepare_raw_data();
+        
+        try{
+            FileWriter myWriter = new FileWriter(data_file.file_path);
+
+            for (String line : lines){
+                myWriter.write(line);
+            }
+            myWriter.close();
+            return true;
+        }catch(IOException e){
+            return false;
+        }
+        
     }
     
     /**

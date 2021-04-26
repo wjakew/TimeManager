@@ -13,6 +13,7 @@ public class TimeManager_DayPair {
     TimeManager_Object date_of_start;
     TimeManager_Object date_of_end;
     
+    public String raw_data;
     public long duration;
     
     public boolean validation_flag;
@@ -43,6 +44,7 @@ public class TimeManager_DayPair {
                 validation_flag = false;
             }
             else{
+                raw_data = line;
                 String date = line.split("\\[")[0];
                 String time = line.split("\\[")[1].substring(0,line.split("\\[")[1].length()-1);
                 //yyyy-MM-dd HH:mm

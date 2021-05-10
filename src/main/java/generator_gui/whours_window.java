@@ -7,14 +7,11 @@ package generator_gui;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import timemanager.TimeManager_Container;
 import timemanager.TimeManager_DayPair;
 import timemanager.TimeManager_FileConnector;
-import timemanager.TimeManager_Object;
 
 /**
  *Window for working with files using generator and timemanager
@@ -27,15 +24,20 @@ public class whours_window extends javax.swing.JFrame {
     String file_src;
     int list_index;
     TimeManager_Container session_tmc;
+    
     /**
      * Creates new form whours_window
      */
-    public whours_window(String version) {
+    public whours_window(String version,String file_src) throws IOException {
         
         working_hours = 168;
         money_per_hour = 18.5;
         list_index = -1;
-        file_src = "";
+        
+        if ( file_src.equals("") )
+            this.file_src = "";
+        else
+            this.file_src = file_src;
         
         initComponents();
         this.setLocationRelativeTo(null);
@@ -193,7 +195,7 @@ public class whours_window extends javax.swing.JFrame {
     /**
      * Function for loading window
      */
-    void load_window(){
+    void load_window() throws IOException, IOException{
         field_cash.setText(Double.toString(money_per_hour));
         field_hours.setText(Integer.toString(working_hours));
         
@@ -208,43 +210,60 @@ public class whours_window extends javax.swing.JFrame {
         field_hours.setEnabled(false);
         field_cash.setEnabled(false);
         button_calculate.setEnabled(false);
+        
+        if ( !this.file_src.equals("") ){
+            load_file(this.file_src);
+        }
     }
     
-    void load_data() throws IOException{
-        if ( !file_src.equals("BLANK") ){
-            label_error.setVisible(false);
-            TimeManager_FileConnector tfc = new TimeManager_FileConnector(file_src);
-            
-            tfc.read_file();
-            
-            if ( tfc.exist_flag && tfc.file_read ){
-                if ( file_src.length() > 30 ){
-                    label_path.setText(file_src.substring(0, 30)+"...");
-                }
-                else{
-                    label_path.setText(file_src);
-                }
-                
-                label_path.setVisible(true);
-                button_loaddatafile.setEnabled(false);
-                session_tmc = new TimeManager_Container(tfc);
-                
-                DefaultListModel dlm = new DefaultListModel();
-                
-                for( TimeManager_DayPair tmo : session_tmc.time_objects ){
-                    dlm.addElement(tmo.prepare_glance());
-                }
-                list_data.setModel(dlm);
-                button_removerecord.setEnabled(true);
-                button_addrecord.setEnabled(true);
-                field_hours.setEnabled(true);
-                field_cash.setEnabled(true);
-                button_calculate.setEnabled(true);
-                list_data.setEnabled(true);
+    /**
+     * Function for loading file
+     * @param file_src
+     * @throws IOException 
+     */
+    void load_file(String file_src) throws IOException{
+        label_error.setVisible(false);
+        TimeManager_FileConnector tfc = new TimeManager_FileConnector(file_src);
+
+        tfc.read_file();
+
+        if ( tfc.exist_flag && tfc.file_read ){
+            if ( file_src.length() > 30 ){
+                label_path.setText(file_src.substring(0, 30)+"...");
             }
             else{
-                label_error.setVisible(true);
+                label_path.setText(file_src);
             }
+
+            label_path.setVisible(true);
+            button_loaddatafile.setEnabled(false);
+            session_tmc = new TimeManager_Container(tfc);
+
+            DefaultListModel dlm = new DefaultListModel();
+
+            for( TimeManager_DayPair tmo : session_tmc.time_objects ){
+                dlm.addElement(tmo.prepare_glance());
+            }
+            list_data.setModel(dlm);
+            button_removerecord.setEnabled(true);
+            button_addrecord.setEnabled(true);
+            field_hours.setEnabled(true);
+            field_cash.setEnabled(true);
+            button_calculate.setEnabled(true);
+            list_data.setEnabled(true);
+        }
+        else{
+            label_error.setVisible(true);
+        }
+    }
+    
+    /**
+     * Function for loading data to the components
+     * @throws IOException 
+     */
+    void load_data() throws IOException{
+        if ( !file_src.equals("BLANK") ){
+            load_file(file_src);
         }
         else{
             label_error.setVisible(true);
@@ -261,6 +280,7 @@ public class whours_window extends javax.swing.JFrame {
         }
         list_data.setModel(dlm);
     }
+    
     private void button_loaddatafileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_loaddatafileActionPerformed
         final JFileChooser fc = new JFileChooser();
         

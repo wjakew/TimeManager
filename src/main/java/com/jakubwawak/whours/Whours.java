@@ -16,9 +16,36 @@ import java.text.ParseException;
  */
 public class Whours {
     
-    static String version = "1.0.0B1";
+    static String version = "1.0.0B3";
  
     public static void main(String[] args) throws ParseException, IOException, SQLException, ClassNotFoundException{
-        new whours_window(version);
+        show_header();
+        
+        FileCrawler crawl = new FileCrawler("");
+        
+        System.out.println(crawl.currentDirectory);
+        
+        crawl.run();
+        
+        if ( !crawl.crawl_result.equals("") ){
+            new whours_window(version,crawl.crawl_result);
+        }
+        else{
+            new whours_window(version,"");
+        }
+    }
+    
+    /**
+     * Function for showing header
+     */
+    static void show_header(){
+        String header = "          _                          \n" +
+                        "__      _| |__   ___  _   _ _ __ ___ \n" +
+                        "\\ \\ /\\ / / '_ \\ / _ \\| | | | '__/ __|\n" +
+                        " \\ V  V /| | | | (_) | |_| | |  \\__ \\\n" +
+                        "  \\_/\\_/ |_| |_|\\___/ \\__,_|_|  |___/\n";
+        header = header+"by JAKUB WAWAK   2021  version"+version+"\n";
+        
+        System.out.println(header);
     }
 }

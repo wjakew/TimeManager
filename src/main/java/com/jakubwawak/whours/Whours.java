@@ -16,23 +16,35 @@ import java.text.ParseException;
  */
 public class Whours {
     
-    static String version = "1.0.0B3";
+    static String version = "1.0.0B4";
+    static int debug = 0;
  
     public static void main(String[] args) throws ParseException, IOException, SQLException, ClassNotFoundException{
         show_header();
         
-        FileCrawler crawl = new FileCrawler("");
-        
-        System.out.println(crawl.currentDirectory);
-        
-        crawl.run();
-        
-        if ( !crawl.crawl_result.equals("") ){
-            new whours_window(version,crawl.crawl_result);
+        if ( debug == 1 ){
+            System.out.println("Debug session is on..");
+            File_Creator fc = new File_Creator();
+            fc.show_data();
+            
+            System.out.println("Debug session ended");
         }
         else{
-            new whours_window(version,"");
+            FileCrawler crawl = new FileCrawler("");
+        
+            System.out.println(crawl.currentDirectory);
+
+            crawl.run();
+
+            if ( !crawl.crawl_result.equals("") ){
+                new whours_window(version,crawl.crawl_result);
+            }
+            else{
+                new whours_window(version,"");
+            }
         }
+        
+
     }
     
     /**

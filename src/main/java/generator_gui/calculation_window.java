@@ -42,6 +42,7 @@ public class calculation_window extends javax.swing.JDialog {
         label_hoursamount.setText("Amount of work hours (minimal): "+Long.toString(rg.converted_hours)+"/"+Integer.toString(hours));
         label_paycheck.setText("Estimated paycheck: "+ rg.converted_hours*money);
         field_raport.setEditable(false);
+        label_rawhours.setText("Raw hours calculation: "+rg.converted_hours);
     }
 
     /**
@@ -59,6 +60,7 @@ public class calculation_window extends javax.swing.JDialog {
         label_paycheck = new javax.swing.JLabel();
         check_savefile = new javax.swing.JCheckBox();
         button_close = new javax.swing.JButton();
+        label_rawhours = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Summary");
@@ -85,6 +87,8 @@ public class calculation_window extends javax.swing.JDialog {
             }
         });
 
+        label_rawhours.setText("Raw hours calculation:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -95,12 +99,14 @@ public class calculation_window extends javax.swing.JDialog {
                     .addComponent(button_close, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(label_paycheck)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(label_hoursamount)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(check_savefile)))
+                        .addComponent(check_savefile))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(label_paycheck)
+                            .addComponent(label_rawhours))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -113,9 +119,11 @@ public class calculation_window extends javax.swing.JDialog {
                     .addComponent(label_hoursamount)
                     .addComponent(check_savefile))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(label_rawhours)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addComponent(label_paycheck)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(button_close, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(button_close, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -145,5 +153,6 @@ public class calculation_window extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel label_hoursamount;
     private javax.swing.JLabel label_paycheck;
+    private javax.swing.JLabel label_rawhours;
     // End of variables declaration//GEN-END:variables
 }

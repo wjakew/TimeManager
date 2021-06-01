@@ -203,9 +203,27 @@ public class TimeManager_Object {
      * Function for getting name of the month
      * @return String
      */
-    String get_month_name(){
+    public String get_month_name(){
         DateFormatSymbols dfs = new DateFormatSymbols(); 
         return dfs.getMonths()[month-1];
+    }
+    
+    /**
+     * Function for getting glance for raport
+     * @return String
+     */
+    public String get_date_glance_raport(){
+        String addon = "[0:00-0:00]";
+        if ( month < 10){
+            if ( day < 10 ){
+                return "0"+Integer.toString(day)+".0"+Integer.toString(this.month)+"."+Integer.toString(this.year)+addon;
+            }
+            return Integer.toString(day)+".0"+Integer.toString(this.month)+"."+Integer.toString(year)+addon;
+        }
+        if ( day < 10)
+            return "0"+Integer.toString(day)+"."+Integer.toString(this.month)+"."+Integer.toString(year)+addon;
+        
+        return Integer.toString(day)+"."+Integer.toString(this.month)+"."+Integer.toString(year)+addon;
     }
     
     /**

@@ -5,8 +5,12 @@ all rights reserved
  */
 package generator_gui;
 
+import com.jakubwawak.whours.File_Creator;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import timemanager.TimeManager_Container;
@@ -69,6 +73,7 @@ public class whours_window extends javax.swing.JFrame {
         label_version = new javax.swing.JLabel();
         label_error = new javax.swing.JLabel();
         label_path = new javax.swing.JLabel();
+        button_createfile = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("WHOURS");
@@ -128,6 +133,13 @@ public class whours_window extends javax.swing.JFrame {
 
         label_path.setText("jLabel3");
 
+        button_createfile.setText("Create file");
+        button_createfile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_createfileActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -138,6 +150,8 @@ public class whours_window extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(label_path, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(button_createfile, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(button_loaddatafile))
                     .addComponent(button_calculate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -171,7 +185,8 @@ public class whours_window extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(button_loaddatafile)
-                    .addComponent(label_path))
+                    .addComponent(label_path)
+                    .addComponent(button_createfile))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -275,10 +290,12 @@ public class whours_window extends javax.swing.JFrame {
      */
     void load_list() throws IOException{
         DefaultListModel dlm = new DefaultListModel();
-        for( TimeManager_DayPair tmo : session_tmc.time_objects ){
-            dlm.addElement(tmo.prepare_glance());
-        }
-        list_data.setModel(dlm);
+        if ( session_tmc.time_objects != null){
+            for( TimeManager_DayPair tmo : session_tmc.time_objects ){
+                dlm.addElement(tmo.prepare_glance());
+            }
+            list_data.setModel(dlm);
+        }   
     }
     
     private void button_loaddatafileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_loaddatafileActionPerformed
@@ -336,11 +353,27 @@ public class whours_window extends javax.swing.JFrame {
         new calculation_window(this,true,session_tmc,Integer.parseInt(field_hours.getText()),Double.parseDouble(field_cash.getText()));
     }//GEN-LAST:event_button_calculateActionPerformed
 
+    private void button_createfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_createfileActionPerformed
+        File_Creator fc = new File_Creator();
+        try {
+            fc.write_file();
+            file_src = fc.abs_path();
+            fc.show_data();
+            load_window();
+        } catch (IOException ex) {
+            Logger.getLogger(whours_window.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(whours_window.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_button_createfileActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_addrecord;
     private javax.swing.JButton button_calculate;
+    private javax.swing.JButton button_createfile;
     private javax.swing.JButton button_loaddatafile;
     private javax.swing.JButton button_removerecord;
     private javax.swing.JTextField field_cash;

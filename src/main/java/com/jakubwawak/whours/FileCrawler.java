@@ -47,7 +47,7 @@ public class FileCrawler {
         System.out.println("Found "+files.length+" in directory");
         for(File file : files){
             System.out.println("File: "+file.getAbsolutePath()+" checking...");
-            if ( file.isFile() && file.getName().contains("czas_pracy")){
+            if ( file.isFile() && file.getName().contains("czas_pracy.txt")){
                 System.out.println("----->File is passing check");
                 crawl_result = file.getAbsolutePath();
                 System.out.println("Crawl result: "+crawl_result);

@@ -31,6 +31,8 @@
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="label_path" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
+                      <Component id="button_createfile" min="-2" pref="96" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="button_loaddatafile" max="-2" attributes="0"/>
                   </Group>
                   <Component id="button_calculate" alignment="0" max="32767" attributes="0"/>
@@ -75,6 +77,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="button_loaddatafile" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="label_path" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="button_createfile" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="538" max="-2" attributes="0"/>
@@ -195,6 +198,14 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="jLabel3"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="button_createfile">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Create file"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_createfileActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
